@@ -2,9 +2,10 @@
 # -*- coding: utf_8 -*-
 # import resource_packs # not the right place, moving it a bit further
 
-#-# Modified by D.C.-G. for translation purpose
-#.# Marks the layout modifications. -- D.C.-G.
+# -# Modified by D.C.-G. for translation purpose
+# .# Marks the layout modifications. -- D.C.-G.
 from __future__ import unicode_literals
+
 """
 mcedit.py
 
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     logger.info(start_msg)
     print '[ ****** ] ~~~~~~~~~~ %s' % start_msg
 
-#---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 # NEW FEATURES HANDLING
 #
 # The idea is to be able to implement and test/use new code without stripping off the current one.
@@ -78,7 +79,7 @@ if __name__ == "__main__":
 # This file is a plain text file with one feature to enable a line.
 # The file is parsed and each feature is added to the builtins using the pattern 'mcenf_<feature>'.
 # The value for these builtins is 'True'.
-# Then, in the code, just check if the builtins has the key 'mcenf_<feature>' to use the new version of the code: 
+# Then, in the code, just check if the builtins has the key 'mcenf_<feature>' to use the new version of the code:
 #
 # ```
 # def foo_old():
@@ -127,14 +128,14 @@ from albow.root import RootWidget
 from config import config
 
 if __name__ == "__main__":
-    #albow.resource.resource_dir = directories.getDataDir()
+    # albow.resource.resource_dir = directories.getDataDir()
     albow.resource.resource_dir = directories.getDataFile()
+
 
 def create_mocked_pyclark():
     import imp
 
     class MockedPyClark(object):
-
         class Clark(object):
 
             def report(self, *args, **kwargs):
@@ -147,6 +148,7 @@ def create_mocked_pyclark():
     sys.modules['pyClark'] = mod
     return mod
 
+
 global pyClark
 pyClark = None
 if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
@@ -154,6 +156,7 @@ if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
     if config.settings.reportCrashes.get():
         try:
             import pyClark
+
             pyClark.Clark('http://127.0.0.1', inject=True)
             logger.info('Successfully setup pyClark')
         except ImportError:
@@ -167,7 +170,6 @@ if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
         print pyClark
 else:
     pyClark = create_mocked_pyclark()
-
 
 import panels
 import leveleditor
@@ -217,7 +219,7 @@ if __name__ == "__main__":
     DEBUG_WM = mcplatform.DEBUG_WM
     USE_WM = mcplatform.USE_WM
 
-    #-# DEBUG
+    # -# DEBUG
     if mcplatform.hasXlibDisplay and DEBUG_WM:
         print '*** Xlib version', str(mcplatform.Xlib.__version__).replace(' ', '').replace(',', '.')[1:-1], 'found in',
         if os.path.expanduser('~/.local/lib/python2.7/site-packages') in mcplatform.Xlib.__file__:
@@ -225,7 +227,7 @@ if __name__ == "__main__":
         else:
             print 'system\'s',
         print 'libraries.'
-    #-#
+    # -#
 from mcplatform import platform_open
 import numpy
 from pymclevel.minecraft_server import ServerJarStorage
@@ -335,9 +337,9 @@ class MCEdit(GLViewport):
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
-        #.#
+        # .#
         self.keyConfigPanel = keys.KeyConfigPanel(self)
-        #.#
+        # .#
 
         self.droppedLevel = None
 
@@ -364,17 +366,17 @@ class MCEdit(GLViewport):
 
         self.fileOpener.focus()
 
-    #-# Translation live updtate preparation
+    # -# Translation live updtate preparation
     def set_update_ui(self, v):
         GLViewport.set_update_ui(self, v)
         if v:
-            #&# Prototype for blocks/items names
+            # &# Prototype for blocks/items names
             if self.editor.level:
-                if self.editor.level.gamePlatform == "Java": # added this so the original functionality of this function does not change
+                if self.editor.level.gamePlatform == "Java":  # added this so the original functionality of this function does not change
                     mclangres.buildResources(self.editor.level.gameVersionNumber, albow.translate.getLang())
                 else:
                     mclangres.buildResources(self.editor.level.gamePlatform, albow.translate.getLang())
-            #&#
+            # &#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)
             if self.fileOpener in self.subwidgets:
@@ -385,7 +387,7 @@ class MCEdit(GLViewport):
                     self.add(self.fileOpener)
                 self.fileOpener.focus()
 
-    #-#
+    # -#
 
     editor = None
 
@@ -468,7 +470,7 @@ class MCEdit(GLViewport):
 
     def makeSideColumn1(self):
         def showLicense():
-            #platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+            # platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
             platform_open(directories.getDataFile('LICENSE.txt'))
 
         def refresh():
@@ -494,16 +496,16 @@ class MCEdit(GLViewport):
                      self.showOptions),
                     ("",
                      "Homepage",
-                     lambda: platform_open("http://www.mcedit-unified.net"),
-                     "http://www.mcedit-unified.net"),
+                     lambda: platform_open("https://www.mcedit-unified.net"),
+                     "https://www.mcedit-unified.net"),
                     ("",
                      "About MCEdit",
-                     lambda: platform_open("http://www.mcedit-unified.net/about.html"),
-                     "http://www.mcedit-unified.net/about.html"),
+                     lambda: platform_open("https://www.mcedit-unified.net/about"),
+                     "https://www.mcedit-unified.net/about.html"),
                     ("",
                      "License",
                      showLicense,
-                     #os.path.join(directories.getDataDir(), "LICENSE.txt")),
+                     # os.path.join(directories.getDataDir(), "LICENSE.txt")),
                      directories.getDataFile('LICENSE.txt')),
                     ("",
                      "Refresh Player Names",
@@ -686,7 +688,7 @@ class MCEdit(GLViewport):
                     if DEBUG_WM:
                         print "restoring window pos and size"
                         print "(config.settings.windowX.get(), config.settings.windowY.get())", (
-                        config.settings.windowX.get(), config.settings.windowY.get())
+                            config.settings.windowX.get(), config.settings.windowY.get())
                     (w, h) = (config_w, config_h)
                     win.set_state(1, (w, h), self.saved_pos)
                 else:
@@ -771,10 +773,10 @@ class MCEdit(GLViewport):
         self.focus_switch = self.fileOpener
 
     def confirm_quit(self):
-        #-# saving language template
+        # -# saving language template
         if hasattr(albow.translate, "saveTemplate"):
             albow.translate.saveTemplate()
-        #-#
+        # -#
         self.saveWindowPosition()
         config.save()
         if self.editor.unsavedEdits:
@@ -827,7 +829,7 @@ class MCEdit(GLViewport):
     def main(cls):
         PlayerCache().load()
         displayContext = GLDisplayContext(splash.splash, caption=(
-        ('MCEdit ~ ' + release.get_version() % _("for")).encode('utf-8'), 'MCEdit'))
+            ('MCEdit ~ ' + release.get_version() % _("for")).encode('utf-8'), 'MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
 
@@ -867,8 +869,6 @@ class MCEdit(GLViewport):
             config.settings.reportCrashes.set(answer == 'Allow')
             config.settings.reportCrashesAsked.set(True)
 
-
-
         config.save()
         if "update" in config.version.version.get():
             answer = albow.ask(
@@ -899,7 +899,7 @@ class MCEdit(GLViewport):
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
                     if (showCmd == mcplatform.win32con.SW_MINIMIZE or
-                                showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+                            showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                         showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
                     config.settings.windowX.set(X)
@@ -939,7 +939,7 @@ class MCEdit(GLViewport):
                 display.get_wm_info()['window'])
             X, Y, r, b = rect
             if (showCmd == mcplatform.win32con.SW_MINIMIZE or
-                        showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+                    showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                 showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
             config.settings.windowX.set(X)
@@ -990,7 +990,7 @@ def main(argv):
     try:
         if not os.path.exists(directories.schematicsDir):
             shutil.copytree(
-                #os.path.join(directories.getDataDir(), u'stock-schematics'),
+                # os.path.join(directories.getDataDir(), u'stock-schematics'),
                 directories.getDataFile('stock-schematics'),
                 directories.schematicsDir
             )
